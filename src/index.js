@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 
 import connectDB from './db/index.js';
 
-dotenv.config({path: './env'});
+dotenv.config({path: './env'});   //This line uses dotenv to load environment variables from a file named env
 
 
 connectDB()    // these are promises

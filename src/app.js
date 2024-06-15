@@ -1,6 +1,6 @@
 import express from 'express';
 
-import cors from 'cors';
+import cors from 'cors';    // allows the server to accept requests from the client
 
 import cookieParser from 'cookie-parser';
 
@@ -8,13 +8,13 @@ const app = express();
 
 
 app.use(cors({
-    origin: process.env.CORS,
+    origin: process.env.CORS,   // in the env file we have allowed it from anywhere by using *
     credentials: true
 }));
 
 
 
-app.use(express.json({    // this sets a limit on the size of the request body
+app.use(express.json({    // This middleware parses incoming requests with JSON payloads
     limit: '50mb'           // getting the json
 }));
  
