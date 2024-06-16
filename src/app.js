@@ -28,4 +28,15 @@ app.use(express.static('public'));   // it is used to store images and such sata
 
 app.use(cookieParser());   // to access the cookies of the user browser
 
-export default app; 
+
+// routes
+
+import userRouter from './routes/user.routes.js';
+
+
+
+// routes declaration
+app.use("/api/v1/users", userRouter);     // i first will have /user and the next is mentioned in the user.routes.js file
+
+
+export {app};

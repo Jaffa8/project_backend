@@ -5,6 +5,9 @@ import connectDB from './db/index.js';
 dotenv.config({path: './env'});   //This line uses dotenv to load environment variables from a file named env
 
 
+import {app} from './app.js';
+
+
 connectDB()    // these are promises
 .then(() => {
    app.listen(process.env.PORT, () => {
