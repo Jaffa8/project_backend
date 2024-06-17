@@ -30,4 +30,4 @@ import fs from 'fs';  // File system module
     }
         
 
-    export default uploadOnCloudinary;
+    export {uploadOnCloudinary};
