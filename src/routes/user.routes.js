@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import upload from "../middlewares/multer.middleware.js";   // as we want to upload the image to cloudinary
+import {upload} from "../middlewares/multer.middleware.js";   // as we want to upload the image to cloudinary
 
 import { registerUser } from "../controllers/user.controller.js";
 
@@ -16,8 +16,8 @@ router.route("/register").post
              name: "coverImage", maxCount: 1
         }
     ]
-)
-)
-(registerUser);    
+),
+registerUser
+);    
 
 export default router;

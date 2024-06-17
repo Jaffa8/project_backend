@@ -8,6 +8,8 @@ import {User} from "../models/user.models.js";     // only the "User will talk t
 
 import {uploadOnCloudinary} from "../utils/cloudinary.js";
 
+
+
 const registerUser=asyncHandler(async(req,res)=>{
    // get user deteails
    // validation-not empty
@@ -25,40 +27,46 @@ const registerUser=asyncHandler(async(req,res)=>{
        throw new ApiErrors(400,"Please fill in all the fields")
    }
 
-   const existedUser=User.findOne({$or:[{username},{email}]})   // checking if the user already exists
+   const existedUser=await User.findOne({$or:[{username},{email}]})   // checking if the user already exists
 
    if(existedUser){
        throw new ApiErrors(409,"User with same email or username already exists")  // if the user already exists
    }
 
-   const avatarLocalPath=req.files?.avatar[0]?.path;   // getting the path of the avatar image
-    const coverImageLocalPath= req.files?.coverImage[0]?.path;   // getting the path of the cover image...though it is not of any use to us
+   const avatarLocalPath = req.files?.avatar[0]?.path;
+    //const coverImageLocalPath = req.files?.coverImage[0]?.path;
 
-    if(!avatarLocalPath){                                         // check in the models that we have defined avatar as required
-        throw new ApiErrors(400,"Please upload an avatar image")  // if the avatar image is not uploaded
+    let coverImageLocalPath;
+    if (req.files && Array.isArray(req.files.coverImage) && req.files.coverImage.length > 0) {
+        coverImageLocalPath = req.files.coverImage[0].path
     }
 
-   const avatar= await uploadOnCloudinary(avatarLocalPath)       // upload on cloudinary
-   const coverImage=await uploadOnCloudinary(coverImageLocalPath)
+
+    if (!avatarLocalPath) {
+        throw new ApiErrors(400, "Avatar file is required");
+    }
+
+    const avatar = await uploadOnCloudinary(avatarLocalPath)
+    const coverImage = await uploadOnCloudinary(coverImageLocalPath)
 
     if(!avatar){                                             // checking once again if the avatar has been uploaded or not
-        throw new ApiErrors(400,"Please upload an avatar image")
+        throw new ApiErrors(405,"Please upload the avatar image")
     }
 
     const user=await User.create({       // creating a user
         fullname,
         avatar:avatar.url,
        email,
-     coverImage:coverImage?.url || "",    // this ? will mean that we are not sure if we will have a url of coverimahe or not as it is not necesary ansyways and we also have not checked if the cover image has been uploaded or not
-     username:username.toLowerCase(),
-     password,
+       coverImage:coverImage?.url || "",    // this ? will mean that we are not sure if we will have a url of coverimahe or not as it is not necesary ansyways and we also have not checked if the cover image has been uploaded or not
+       username:username.toLowerCase(),
+       password,
     })
 
-    const createdUser=await User.findbyId(user._id).select(   //   finding if the user has been created successfully or not
+    const createdUser=await User.findById(user._id).select(   //   finding if the user has been created successfully or not
         "-password -refreshToken"
     )
     if(!createdUser){
-        throw new ApiErrors(500,"Somethibg went wrong while registering the user")
+        throw new ApiErrors(500,"Something went wrong while registering the user")
 
     }
 
