@@ -7,6 +7,8 @@ import cookieParser from 'cookie-parser';
 const app = express();
 
 
+
+
 app.use(cors({
     origin: process.env.CORS,   // in the env file we have allowed it from anywhere by using *
     credentials: true
@@ -37,6 +39,8 @@ import userRouter from './routes/user.routes.js';
 
 // routes declaration
 app.use("/api/v1/users", userRouter);     // i first will have /user and the next is mentioned in the user.routes.js file
+
+
 
 
 export {app};

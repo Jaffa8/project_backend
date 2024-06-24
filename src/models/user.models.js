@@ -50,7 +50,7 @@ const userSchema=new mongoose.Schema({
 },{timestamps:true});
 
 
-userSchema.pre("save",async function(next){     // Hashing the password before saving it to the database
+userSchema.pre("save",async function(next){     // .pre(save) is a middleware that runs before saving the user
     if(!this.isModified("password")) return next();     // in case the password is not modified
     try{
         const salt=await bcrypt.genSalt(10);
@@ -66,7 +66,7 @@ userSchema.methods.comparePassword=async function(password){    // Comparing the
 };
 
 
-userSchema.methods.geneateAccessToken=function(){   // Generating the access token before saving it  
+userSchema.methods.generateAccessToken=function(){   // Generating the access token before saving it  
  return jwt.sign({
     id:this._id,
     username:this.username,   // payload
