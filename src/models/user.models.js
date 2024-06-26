@@ -61,9 +61,9 @@ userSchema.pre("save",async function(next){     // .pre(save) is a middleware th
     }
 });  
 
-userSchema.methods.comparePassword=async function(password){    // Comparing the password
-    return bcrypt.compare(password,this.password);   //this will return either true or false
-};
+userSchema.methofs.isPasswordCorrect=async function(password){   // checking if the password is correct
+    return await bcrypt.compare(password,this.password);
+}
 
 
 userSchema.methods.generateAccessToken=function(){   // Generating the access token before saving it  
