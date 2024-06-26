@@ -68,7 +68,7 @@ userSchema.methods.comparePassword=async function(password){    // Comparing the
 
 userSchema.methods.generateAccessToken=function(){   // Generating the access token before saving it  
  return jwt.sign({
-    id:this._id,
+    _id:this._id,
     username:this.username,   // payload
     email:this.email,
     fullname:this.fullname,
@@ -80,7 +80,7 @@ userSchema.methods.generateAccessToken=function(){   // Generating the access to
 
 userSchema.methods.generateRefreshToken=function(){    // Generating the refresh token
     return jwt.sign({
-        id:this._id,
+        _id:this._id,
        
         fullname:this.fullname,
     } ,process.env.ACCESS_TOKEN_SECRET,{  // secret key
